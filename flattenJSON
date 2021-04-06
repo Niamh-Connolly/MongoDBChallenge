@@ -1,0 +1,82 @@
+const prompt = require('prompt-sync')({sigint: true});        //
+const input = prompt('Enter a JSON object: ');                //takes in user input
+let userTest  = JSON.parse(input);                            //
+
+//function to flatten
+function mdbChallenge (arr)
+{
+  //creates a new object
+  let newObject = {};
+  //loop iterates over arr
+  for (let i in arr)
+  {
+    //checks if it is nested.
+    if (typeof arr[i] == 'object')
+    {
+      //runs the function recursively with every arr[i]
+      let arr2 = mdbChallenge(arr[i]);
+      //nested loop iterates over arr2
+      for (let j in arr2)
+      {
+        //puts a full stop between the variables to be flattened and updates it to arr2[j]
+        newObject[i+"."+j] = arr2[j];
+      }
+    }
+    else//if not nested
+    {
+      newObject[i] = arr[i];
+    }
+  }
+  return newObject;
+}
+
+//test case 1
+let test1= {
+
+  "a": 1,
+  "b": true,
+  "c": {
+    "d": 3,
+    "e": "test"
+  }
+
+}
+//test case 2
+let test2 = {
+
+  "a": 1,
+  "b": true,
+  "c": {
+    "d": 3,
+    "e": {
+      "f": "test",
+      "g": 6
+    }
+  }
+}
+//test case3
+let test3 = {
+
+  "a": 1,
+  "b": {
+    "c": "test1",
+    "d": false
+  },
+  "e": true,
+  "f": {
+    "g": 3,
+    "h": {
+      "i": "test2",
+      "j": 6
+    }
+  }
+}
+
+//output
+console.log(JSON.stringify(mdbChallenge(userTest),null,4));
+
+//--- TestCases ---
+
+//console.log(JSON.stringify(mdbChallenge(test1), null,4));
+//console.log(JSON.stringify(mdbChallenge(test2),null,4));
+//console.log(JSON.stringify(mdbChallenge(test3),null,4));
